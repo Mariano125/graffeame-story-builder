@@ -15,8 +15,13 @@
     .canvas-preview-wrapper {
       position: relative;
       aspect-ratio: 9 / 16;
-      max-height: 85vh;
+      max-height: 40vh;
       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+    }
+    @media (min-width: 1024px) {
+      .canvas-preview-wrapper {
+        max-height: 85vh;
+      }
     }
   </style>
 </head>
@@ -48,10 +53,29 @@
   </header>
 
   <!-- Main Layout -->
-  <div class="flex-1 flex flex-col-reverse lg:flex-row overflow-y-auto lg:overflow-hidden">
+  <div class="flex-1 flex flex-col lg:flex-row overflow-y-auto lg:overflow-hidden">
     
+    <!-- Main Live Preview Area (Fija arriba en celular) -->
+    <main class="w-full lg:flex-1 bg-slate-950/95 p-3 lg:p-6 flex flex-col items-center justify-center relative sticky top-0 lg:static z-20 border-b lg:border-b-0 border-slate-800 backdrop-blur shadow-2xl shrink-0">
+      
+      <!-- Canvas Container Container -->
+      <div class="canvas-preview-wrapper w-full max-w-[280px] sm:max-w-[340px] lg:max-w-none rounded-2xl lg:rounded-3xl overflow-hidden border border-zinc-800 bg-slate-900 flex items-center justify-center shadow-2xl">
+        <!-- Canvas actual 1080x1920 scaled via CSS -->
+        <canvas id="storyCanvas" class="w-full h-full object-contain rounded-2xl lg:rounded-3xl"></canvas>
+      </div>
+
+      <!-- Preview Helper Hint -->
+      <div class="mt-2 lg:mt-4 text-center">
+        <span class="text-[10px] sm:text-xs text-zinc-400 bg-zinc-900 border border-zinc-800 px-3 py-1 rounded-full inline-flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          Previsualización HD 1080x1920 (Instagram Story 9:16)
+        </span>
+      </div>
+
+    </main>
+
     <!-- Left Sidebar: Controls & Presets -->
-    <aside class="w-full lg:w-[450px] border-t lg:border-t-0 lg:border-r border-slate-800 bg-slate-900 overflow-y-visible lg:overflow-y-auto flex flex-col shrink-0">
+    <aside class="w-full lg:w-[450px] border-r-0 lg:border-r border-slate-800 bg-slate-900 overflow-y-visible lg:overflow-y-auto flex flex-col shrink-0">
       
       <!-- Tabs / Sections Header -->
       <div class="p-5 border-b border-slate-800 space-y-4">
@@ -245,25 +269,6 @@
       </div>
 
     </aside>
-
-    <!-- Main Live Preview Area -->
-    <main class="flex-1 bg-slate-950 p-6 flex flex-col items-center justify-center relative overflow-hidden">
-      
-      <!-- Canvas Container Container -->
-      <div class="canvas-preview-wrapper rounded-3xl overflow-hidden border border-slate-800 bg-slate-900 flex items-center justify-center">
-        <!-- Canvas actual 1080x1920 scaled via CSS -->
-        <canvas id="storyCanvas" class="w-full h-full object-contain rounded-3xl"></canvas>
-      </div>
-
-      <!-- Preview Helper Hint -->
-      <div class="mt-4 text-center">
-        <span class="text-xs text-slate-500 bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-full inline-flex items-center gap-2">
-          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          Previsualización HD 1080x1920 (Formato 9:16 Oficial de Instagram Stories)
-        </span>
-      </div>
-
-    </main>
 
   </div>
 
