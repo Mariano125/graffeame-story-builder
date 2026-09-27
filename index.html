@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full bg-slate-950 text-slate-100">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Story Builder @graffeame 🚀 | Instagram Stories Studio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Custom scrollbars */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #0f172a; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    
+    .canvas-preview-wrapper {
+      position: relative;
+      aspect-ratio: 9 / 16;
+      max-height: 85vh;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+    }
+  </style>
+</head>
+<body class="h-full flex flex-col font-sans overflow-hidden">
+
+  <!-- Header Navigation Bar -->
+  <header class="h-16 border-b border-slate-800 bg-slate-900/90 backdrop-blur px-6 flex items-center justify-between z-10 shrink-0">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-zinc-800 border border-zinc-700 flex items-center justify-center text-white font-extrabold text-xl shadow-lg shadow-black/50">
+        G
+      </div>
+      <div>
+        <h1 class="font-black text-lg text-white tracking-wide flex items-center gap-2">
+          Story Builder <span class="text-zinc-200 text-sm font-semibold px-2.5 py-0.5 rounded-md bg-zinc-800 border border-zinc-700">@graffeame</span>
+        </h1>
+        <p class="text-xs text-zinc-400">Grabados Láser & Personalizados · Historias 1080x1920 HD</p>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex items-center gap-3">
+      <button id="copyCaptionBtn" class="px-4 py-2 text-xs font-bold rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 transition flex items-center gap-2 cursor-pointer">
+        📋 Copiar Texto de la Historia
+      </button>
+      <button id="downloadBtn" class="px-5 py-2.5 text-sm font-extrabold rounded-xl bg-white hover:bg-zinc-200 text-black shadow-lg shadow-black/40 transition flex items-center gap-2 cursor-pointer border border-zinc-300">
+        📥 Descargar Historia (PNG HD)
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Layout -->
+  <div class="flex-1 flex overflow-hidden">
+    
+    <!-- Left Sidebar: Controls & Presets -->
+    <aside class="w-[450px] border-r border-slate-800 bg-slate-900 overflow-y-auto flex flex-col shrink-0">
+      
+      <!-- Tabs / Sections Header -->
+      <div class="p-5 border-b border-slate-800 space-y-4">
+        
+        <!-- 1. Photo Upload Box -->
+        <div>
+          <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">1. Foto del Producto</label>
+          <div class="flex gap-2">
+            <label class="flex-1 border-2 border-dashed border-slate-700 hover:border-amber-500/50 bg-slate-950 p-4 rounded-xl text-center cursor-pointer transition group">
+              <input type="file" id="imageInput" accept="image/*,.jfif,.jpeg,.jpg,.png,.webp,.gif" class="hidden">
+              <span class="text-2xl block mb-1 group-hover:scale-110 transition-transform">📸</span>
+              <span class="text-xs font-bold text-slate-300 block">Subir foto de producto</span>
+              <span class="text-[10px] text-slate-500 block">Mate, Cuchillo, Tabla, Llavero...</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Controls: Scale & Background -->
+        <div class="grid grid-cols-2 gap-3 pt-2">
+          <div>
+            <label class="block text-[11px] font-bold text-slate-400 mb-1">Escala / Zoom</label>
+            <input type="range" id="scaleInput" min="0.2" max="3" step="0.05" value="1" class="w-full accent-amber-500">
+          </div>
+          <div class="flex items-center gap-2 pt-4">
+            <input type="checkbox" id="blurBgToggle" checked class="w-4 h-4 accent-amber-500 rounded cursor-pointer">
+            <label for="blurBgToggle" class="text-xs text-slate-300 cursor-pointer font-medium">Fondo desenfocado</label>
+          </div>
+        </div>
+
+        <!-- Retoque Fotográfico e Instagram Enhancement -->
+        <div class="pt-3 border-t border-slate-800 space-y-3">
+          <div class="flex justify-between items-center">
+            <label class="text-xs font-bold text-zinc-200 uppercase tracking-wider flex items-center gap-1.5">
+              <span>✨ Retoque Fotográfico Instagram</span>
+            </label>
+            <button id="resetRetouchBtn" class="text-[10px] text-zinc-400 hover:text-white underline">Restablecer</button>
+          </div>
+
+          <!-- Presets Rápidos de Retoque -->
+          <div class="grid grid-cols-3 gap-1.5">
+            <button data-filter="auto" class="filter-btn text-[11px] py-1.5 px-2 rounded-lg bg-zinc-800 text-white border border-zinc-600 font-semibold hover:bg-zinc-700 transition text-center cursor-pointer">
+              🪄 Auto Pro
+            </button>
+            <button data-filter="wood" class="filter-btn text-[11px] py-1.5 px-2 rounded-lg bg-slate-800 text-slate-300 border border-slate-700 font-semibold hover:bg-slate-700 transition text-center cursor-pointer">
+              🪵 Madera/Cuero
+            </button>
+            <button data-filter="steel" class="filter-btn text-[11px] py-1.5 px-2 rounded-lg bg-slate-800 text-slate-300 border border-slate-700 font-semibold hover:bg-slate-700 transition text-center cursor-pointer">
+              🔪 Acero/Metal
+            </button>
+            <button data-filter="vibrant" class="filter-btn text-[11px] py-1.5 px-2 rounded-lg bg-slate-800 text-slate-300 border border-slate-700 font-semibold hover:bg-slate-700 transition text-center cursor-pointer">
+              🎨 Color Pop
+            </button>
+            <button data-filter="none" class="filter-btn text-[11px] py-1.5 px-2 rounded-lg bg-slate-800 text-slate-300 border border-slate-700 font-semibold hover:bg-slate-700 transition text-center cursor-pointer col-span-2">
+              📷 Original (Sin Filtro)
+            </button>
+          </div>
+
+          <!-- Manual Retouch Sliders -->
+          <div class="grid grid-cols-2 gap-x-3 gap-y-2 pt-1 bg-slate-950/60 p-3 rounded-xl border border-slate-800/80">
+            <div>
+              <div class="flex justify-between text-[10px] font-bold text-slate-400 mb-0.5">
+                <span>☀️ Brillo</span>
+                <span id="brightnessVal">105%</span>
+              </div>
+              <input type="range" id="brightnessInput" min="70" max="150" value="105" class="w-full accent-zinc-300 h-1 bg-slate-800 rounded-lg">
+            </div>
+
+            <div>
+              <div class="flex justify-between text-[10px] font-bold text-slate-400 mb-0.5">
+                <span>🌓 Contraste</span>
+                <span id="contrastVal">115%</span>
+              </div>
+              <input type="range" id="contrastInput" min="70" max="170" value="115" class="w-full accent-zinc-300 h-1 bg-slate-800 rounded-lg">
+            </div>
+
+            <div>
+              <div class="flex justify-between text-[10px] font-bold text-slate-400 mb-0.5">
+                <span>🎨 Saturación</span>
+                <span id="saturateVal">125%</span>
+              </div>
+              <input type="range" id="saturateInput" min="50" max="200" value="125" class="w-full accent-zinc-300 h-1 bg-slate-800 rounded-lg">
+            </div>
+
+            <div>
+              <div class="flex justify-between text-[10px] font-bold text-slate-400 mb-0.5">
+                <span>🔳 Viñeta</span>
+                <span id="vignetteVal">25%</span>
+              </div>
+              <input type="range" id="vignetteInput" min="0" max="70" value="25" class="w-full accent-zinc-300 h-1 bg-slate-800 rounded-lg">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accordion / Control Groups -->
+      <div class="p-5 space-y-6 flex-1">
+        
+        <!-- 2. Marketing Copys Catalog -->
+        <div>
+          <div class="flex justify-between items-center mb-3">
+            <h3 class="text-xs font-bold text-zinc-200 uppercase tracking-wider">2. Plantillas de Marketing</h3>
+            <span class="text-[10px] bg-zinc-800 text-zinc-200 border border-zinc-700 px-2 py-0.5 rounded-full font-bold">1-Clic</span>
+          </div>
+          <div id="presetCategories">
+            <!-- Rendered dynamically by marketing_presets.js -->
+          </div>
+        </div>
+
+        <hr class="border-slate-800">
+
+        <!-- 3. Text Editing Section -->
+        <div class="space-y-3">
+          <h3 class="text-xs font-bold text-zinc-200 uppercase tracking-wider">3. Personalizar Textos</h3>
+          
+          <div>
+            <label class="block text-[11px] font-bold text-slate-400 mb-1">Insignia / Badge</label>
+            <input type="text" id="badgeInput" value="GRABADO LÁSER ⚡" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-zinc-500">
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-bold text-slate-400 mb-1">Título Principal (Headline)</label>
+            <input type="text" id="headlineInput" value="TU MATE, TU HISTORIA 🧉✨" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-zinc-500">
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-bold text-slate-400 mb-1">Descripción / Subtítulo</label>
+            <textarea id="subInput" rows="2" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-zinc-500 resize-none">Grabado láser 100% personalizado con tu nombre o logo.</textarea>
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-bold text-slate-400 mb-1">Llamada a la Acción (Botón CTA)</label>
+            <input type="text" id="ctaInput" value="Escribinos por MP y diseñamos el tuyo 📩" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-zinc-500">
+          </div>
+        </div>
+
+        <hr class="border-slate-800">
+
+        <!-- 4. Branding & Visual Theme -->
+        <div class="space-y-4">
+          <h3 class="text-xs font-bold text-zinc-200 uppercase tracking-wider">4. Estilo Visual & Marca</h3>
+          
+          <div>
+            <label class="block text-[11px] font-bold text-slate-400 mb-2">Tema de Colores</label>
+            <div id="themeSelector" class="grid grid-cols-1 gap-2">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+
+          <!-- Handle & Logo controls -->
+          <div class="space-y-2">
+            <div>
+              <label class="block text-[11px] font-bold text-slate-400 mb-1">Instagram Handle</label>
+              <input type="text" id="handleInput" value="@graffeame" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-zinc-500">
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-bold text-slate-400 mb-1">Subir Logo PNG propio (Opcional)</label>
+              <input type="file" id="logoInput" accept="image/*,.png,.svg,.jfif,.jpeg,.jpg,.webp" class="text-xs text-slate-400 file:mr-2 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-slate-800 file:text-zinc-200 hover:file:bg-slate-700">
+            </div>
+          </div>
+
+          <!-- Toggles -->
+          <div class="space-y-2.5 pt-2">
+            <label class="flex items-center gap-2.5 cursor-pointer bg-zinc-950 p-2.5 rounded-lg border border-zinc-800 hover:border-zinc-700 transition">
+              <input type="checkbox" id="toggleLogo" checked class="w-4 h-4 accent-zinc-300 rounded cursor-pointer">
+              <span class="text-xs text-white font-bold flex items-center gap-1.5">
+                <span>🖼️ Mostrar Logo Marca GRAFFO (PNG)</span>
+              </span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="toggleBadge" checked class="w-4 h-4 accent-zinc-300 rounded">
+              <span class="text-xs text-slate-300">Mostrar Insignia superior</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="toggleHandle" checked class="w-4 h-4 accent-zinc-300 rounded">
+              <span class="text-xs text-slate-300">Mostrar etiqueta Instagram (@graffeame)</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="toggleSticker" class="w-4 h-4 accent-zinc-300 rounded">
+              <span class="text-xs text-slate-300">Simular Encuesta Interactiva de Instagram</span>
+            </label>
+          </div>
+
+          <div id="stickerGroup" class="hidden space-y-2 pl-6 pt-1">
+            <label class="block text-[11px] font-bold text-slate-400">Pregunta de la Encuesta</label>
+            <input type="text" id="stickerInput" value="¿Cuál preferís para regalar?" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-zinc-500">
+          </div>
+
+        </div>
+
+      </div>
+
+    </aside>
+
+    <!-- Main Live Preview Area -->
+    <main class="flex-1 bg-slate-950 p-6 flex flex-col items-center justify-center relative overflow-hidden">
+      
+      <!-- Canvas Container Container -->
+      <div class="canvas-preview-wrapper rounded-3xl overflow-hidden border border-slate-800 bg-slate-900 flex items-center justify-center">
+        <!-- Canvas actual 1080x1920 scaled via CSS -->
+        <canvas id="storyCanvas" class="w-full h-full object-contain rounded-3xl"></canvas>
+      </div>
+
+      <!-- Preview Helper Hint -->
+      <div class="mt-4 text-center">
+        <span class="text-xs text-slate-500 bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-full inline-flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          Previsualización HD 1080x1920 (Formato 9:16 Oficial de Instagram Stories)
+        </span>
+      </div>
+
+    </main>
+
+  </div>
+
+  <script src="marketing_presets.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
