@@ -20,38 +20,38 @@
     }
   </style>
 </head>
-<body class="h-full flex flex-col font-sans overflow-hidden">
+<body class="h-full flex flex-col font-sans overflow-x-hidden overflow-y-auto lg:overflow-hidden bg-slate-950 text-slate-100">
 
   <!-- Header Navigation Bar -->
-  <header class="h-16 border-b border-slate-800 bg-slate-900/90 backdrop-blur px-6 flex items-center justify-between z-10 shrink-0">
+  <header class="min-h-[64px] border-b border-slate-800 bg-slate-900/90 backdrop-blur px-4 sm:px-6 py-3 lg:py-0 flex flex-col sm:flex-row items-center justify-between gap-3 z-10 shrink-0">
     <div class="flex items-center gap-3">
-      <div class="w-10 h-10 rounded-xl bg-zinc-800 border border-zinc-700 flex items-center justify-center text-white font-extrabold text-xl shadow-lg shadow-black/50">
+      <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-zinc-800 border border-zinc-700 flex items-center justify-center text-white font-extrabold text-lg sm:text-xl shadow-lg shadow-black/50">
         G
       </div>
       <div>
-        <h1 class="font-black text-lg text-white tracking-wide flex items-center gap-2">
-          Story Builder <span class="text-zinc-200 text-sm font-semibold px-2.5 py-0.5 rounded-md bg-zinc-800 border border-zinc-700">@graffeame</span>
+        <h1 class="font-black text-base sm:text-lg text-white tracking-wide flex items-center gap-2">
+          Story Builder <span class="text-zinc-200 text-xs sm:text-sm font-semibold px-2 py-0.5 rounded-md bg-zinc-800 border border-zinc-700">@graffeame</span>
         </h1>
-        <p class="text-xs text-zinc-400">Grabados Láser & Personalizados · Historias 1080x1920 HD</p>
+        <p class="text-[11px] sm:text-xs text-zinc-400">Grabados Láser & Personalizados · Historias 1080x1920 HD</p>
       </div>
     </div>
 
     <!-- Action Buttons -->
-    <div class="flex items-center gap-3">
-      <button id="copyCaptionBtn" class="px-4 py-2 text-xs font-bold rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 transition flex items-center gap-2 cursor-pointer">
-        📋 Copiar Texto de la Historia
+    <div class="flex items-center gap-2 sm:gap-3 w-full sm:w-auto justify-end">
+      <button id="copyCaptionBtn" class="flex-1 sm:flex-none px-3 py-2 text-xs font-bold rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 transition flex items-center justify-center gap-1.5 cursor-pointer">
+        📋 Copiar Texto
       </button>
-      <button id="downloadBtn" class="px-5 py-2.5 text-sm font-extrabold rounded-xl bg-white hover:bg-zinc-200 text-black shadow-lg shadow-black/40 transition flex items-center gap-2 cursor-pointer border border-zinc-300">
-        📥 Descargar Historia (PNG HD)
+      <button id="downloadBtn" class="flex-1 sm:flex-none px-4 py-2 text-xs sm:text-sm font-extrabold rounded-xl bg-white hover:bg-zinc-200 text-black shadow-lg shadow-black/40 transition flex items-center justify-center gap-1.5 cursor-pointer border border-zinc-300">
+        📥 Descargar (PNG HD)
       </button>
     </div>
   </header>
 
   <!-- Main Layout -->
-  <div class="flex-1 flex overflow-hidden">
+  <div class="flex-1 flex flex-col-reverse lg:flex-row overflow-y-auto lg:overflow-hidden">
     
     <!-- Left Sidebar: Controls & Presets -->
-    <aside class="w-[450px] border-r border-slate-800 bg-slate-900 overflow-y-auto flex flex-col shrink-0">
+    <aside class="w-full lg:w-[450px] border-t lg:border-t-0 lg:border-r border-slate-800 bg-slate-900 overflow-y-visible lg:overflow-y-auto flex flex-col shrink-0">
       
       <!-- Tabs / Sections Header -->
       <div class="p-5 border-b border-slate-800 space-y-4">
