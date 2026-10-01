@@ -15,6 +15,10 @@ class StoryBuilder {
     this.userImage = null;
     this.logoImage = new Image();
     this.showLogo = true;
+    this.logoAnimating = false;
+    this.logoAnimStartTime = null;
+    this.logoAnimDuration = 750; // ms
+    this.logoAnimProgress = 1;   // 1 = fully settled (static state)
     
     // Auto-load official GRAFFO brand logo PNG
     this.logoImage.onload = () => {
@@ -49,6 +53,27 @@ class StoryBuilder {
     this.renderCategoryOptions();
     this.renderThemeOptions();
     this.draw();
+  }
+
+  // ── Logo entrance animation ──────────────────────────────────────────────
+  startLogoAnimation() {
+    this.logoAnimating = true;
+    this.logoAnimProgress = 0;
+    this.logoAnimStartTime = null;
+    requestAnimationFrame((ts) => this._animLoop(ts));
+  }
+
+  _animLoop(timestamp) {
+    if (!this.logoAnimStartTime) this.logoAnimStartTime = timestamp;
+    const elapsed = timestamp - this.logoAnimStartTime;
+    this.logoAnimProgress = Math.min(elapsed / this.logoAnimDuration, 1);
+    this.draw();
+    if (this.logoAnimProgress < 1) {
+      requestAnimationFrame((ts) => this._animLoop(ts));
+    } else {
+      this.logoAnimating = false;
+      this.logoAnimProgress = 1;
+    }
   }
 
   initEvents() {
@@ -219,7 +244,13 @@ class StoryBuilder {
     if (toggleLogoEl) {
       toggleLogoEl.addEventListener("change", (e) => {
         this.showLogo = e.target.checked;
-        this.draw();
+        if (this.showLogo) {
+          this.startLogoAnimation(); // bounce-in animation
+        } else {
+          this.logoAnimProgress = 1;
+          this.logoAnimating = false;
+          this.draw();
+        }
       });
     }
     document.getElementById("toggleBadge").addEventListener("change", (e) => {
@@ -443,11 +474,33 @@ class StoryBuilder {
       ctx.save();
       const logoW = 200;
       const logoH = (this.logoImage.naturalHeight / this.logoImage.naturalWidth) * logoW;
-      
+
+      // ── Bounce-in animation when logo appears ──────────────────────────
+      const t = this.logoAnimProgress; // 0 → 1 during animation, 1 at rest
+      // Easing: ease-out elastic — starts fast, overshoots slightly, settles
+      let scale, offsetX;
+      if (t < 1) {
+        // Slide in from left (starts 200px off) while scaling 0 → 1.15 → 1
+        const eased = t < 0.65
+          ? (t / 0.65)                                   // ease-in phase (0 → 1)
+          : 1 + 0.15 * Math.sin(Math.PI * (t - 0.65) / 0.35); // overshoot → settle
+        scale = eased;
+        offsetX = -(1 - Math.min(t * 1.6, 1)) * 200;   // slide from -200px → 0
+      } else {
+        scale = 1;
+        offsetX = 0;
+      }
+
+      // Apply transform around logo center
+      const cx = 80 + logoW / 2 + offsetX;
+      const cy = topMargin + logoH / 2;
+      ctx.translate(cx, cy);
+      ctx.scale(scale, scale);
+
       // Sombra suave para destacar sobre cualquier foto
       ctx.shadowColor = "rgba(0, 0, 0, 0.75)";
       ctx.shadowBlur = 16;
-      ctx.drawImage(this.logoImage, 80, topMargin, logoW, logoH);
+      ctx.drawImage(this.logoImage, -logoW / 2, -logoH / 2, logoW, logoH);
       ctx.restore();
     } else if (this.showLogo) {
       // Vector Logo Text Fallback
@@ -682,6 +735,12 @@ class StoryBuilder {
   }
 
   downloadStory() {
+    // Ensure animation is settled before exporting the canvas
+    if (this.logoAnimating) {
+      this.logoAnimating = false;
+      this.logoAnimProgress = 1;
+      this.draw(); // render final static frame
+    }
     this.canvas.toBlob(async (blob) => {
       if (!blob) return;
 
