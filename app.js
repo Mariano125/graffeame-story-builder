@@ -271,27 +271,33 @@ class StoryBuilder {
   }
 
   renderCategoryOptions() {
-    const container = document.getElementById("presetCategories");
-    container.innerHTML = "";
+    const select = document.getElementById("categorySelect");
+    const container = document.getElementById("presetCopysList");
 
+    if (!select || !container) return;
+
+    select.innerHTML = "";
     MARKETING_PRESETS.categories.forEach((cat) => {
-      const btnGroup = document.createElement("div");
-      btnGroup.className = "mb-4";
-      btnGroup.innerHTML = `<h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">${cat.name}</h4>`;
-      
-      const grid = document.createElement("div");
-      grid.className = "grid grid-cols-1 gap-2";
+      const opt = document.createElement("option");
+      opt.value = cat.id;
+      opt.textContent = `${cat.name}`;
+      select.appendChild(opt);
+    });
 
-      cat.copys.forEach((item) => {
+    const renderCopysForCategory = (catId) => {
+      container.innerHTML = "";
+      const selectedCat = MARKETING_PRESETS.categories.find((c) => c.id === catId) || MARKETING_PRESETS.categories[0];
+      
+      selectedCat.copys.forEach((item) => {
         const itemBtn = document.createElement("button");
-        itemBtn.className = "text-left p-3 rounded-lg border border-gray-700 bg-gray-800 hover:bg-gray-700 transition flex flex-col gap-1 cursor-pointer";
+        itemBtn.className = "text-left p-3 rounded-xl border border-zinc-800 bg-zinc-950/80 hover:bg-zinc-800 hover:border-zinc-700 transition flex flex-col gap-1 cursor-pointer shadow-sm group";
         itemBtn.innerHTML = `
           <div class="flex justify-between items-center">
-            <span class="text-xs font-semibold text-yellow-400">${item.title}</span>
-            <span class="text-[10px] bg-yellow-400/20 text-yellow-300 px-2 py-0.5 rounded-full font-bold">${item.badge}</span>
+            <span class="text-xs font-bold text-zinc-300 group-hover:text-white transition-colors">${item.title}</span>
+            <span class="text-[10px] bg-zinc-800 text-zinc-200 border border-zinc-700 px-2 py-0.5 rounded-full font-bold">${item.badge}</span>
           </div>
-          <span class="text-sm font-bold text-white line-clamp-1">${item.headline}</span>
-          <span class="text-xs text-gray-300 line-clamp-1">${item.sub}</span>
+          <span class="text-xs sm:text-sm font-black text-white line-clamp-1">${item.headline}</span>
+          <span class="text-[11px] text-zinc-400 line-clamp-1">${item.sub}</span>
         `;
         itemBtn.addEventListener("click", () => {
           this.headlineText = item.headline;
@@ -306,11 +312,16 @@ class StoryBuilder {
           
           this.draw();
         });
-        grid.appendChild(itemBtn);
+        container.appendChild(itemBtn);
       });
-      btnGroup.appendChild(grid);
-      container.appendChild(btnGroup);
+    };
+
+    select.addEventListener("change", (e) => {
+      renderCopysForCategory(e.target.value);
     });
+
+    // Render initial category
+    renderCopysForCategory(MARKETING_PRESETS.categories[0].id);
   }
 
   renderThemeOptions() {
@@ -671,10 +682,66 @@ class StoryBuilder {
   }
 
   downloadStory() {
-    const link = document.createElement("a");
-    link.download = `graffeame_historia_${Date.now()}.png`;
-    link.href = this.canvas.toDataURL("image/png");
-    link.click();
+    this.canvas.toBlob(async (blob) => {
+      if (!blob) return;
+
+      const fileName = `graffeame_historia_${Date.now()}.png`;
+      const file = new File([blob], fileName, { type: "image/png" });
+
+      // 1. Intentar Web Share API nativo de celular (iOS Safari / Android Chrome)
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        try {
+          await navigator.share({
+            files: [file],
+            title: "Historia @graffeame",
+            text: "Historia de Instagram @graffeame"
+          });
+          return;
+        } catch (err) {
+          console.log("Compartir cancelado o no disponible", err);
+        }
+      }
+
+      // 2. Si no abre Share Sheet o es navegador Web, abrir Modal con imagen HD e instrucción de guardar
+      const imgUrl = URL.createObjectURL(blob);
+      const modalImg = document.getElementById("modalStoryImg");
+      const downloadLink = document.getElementById("directDownloadLink");
+      const modal = document.getElementById("saveModal");
+      const nativeBtn = document.getElementById("nativeShareBtn");
+
+      if (modalImg && modal) {
+        modalImg.src = imgUrl;
+        if (downloadLink) {
+          downloadLink.href = imgUrl;
+          downloadLink.download = fileName;
+        }
+        
+        // Guardar referencia al archivo en el botón de compartir
+        if (nativeBtn) {
+          nativeBtn.onclick = async () => {
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+              try {
+                await navigator.share({ files: [file] });
+              } catch (e) {}
+            } else {
+              // Descarga por enlace
+              const link = document.createElement("a");
+              link.href = imgUrl;
+              link.download = fileName;
+              link.click();
+            }
+          };
+        }
+
+        modal.classList.remove("hidden");
+      } else {
+        // Enlace de descarga directo
+        const link = document.createElement("a");
+        link.download = fileName;
+        link.href = imgUrl;
+        link.click();
+      }
+    }, "image/png");
   }
 }
 

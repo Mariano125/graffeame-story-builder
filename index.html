@@ -173,14 +173,22 @@
       <!-- Accordion / Control Groups -->
       <div class="p-5 space-y-6 flex-1">
         
-        <!-- 2. Marketing Copys Catalog -->
-        <div>
-          <div class="flex justify-between items-center mb-3">
-            <h3 class="text-xs font-bold text-zinc-200 uppercase tracking-wider">2. Plantillas de Marketing</h3>
-            <span class="text-[10px] bg-zinc-800 text-zinc-200 border border-zinc-700 px-2 py-0.5 rounded-full font-bold">1-Clic</span>
+        <!-- 2. Marketing Copys Catalog (Menú Desplegable) -->
+        <div class="space-y-3">
+          <div class="flex justify-between items-center">
+            <h3 class="text-xs font-bold text-zinc-200 uppercase tracking-wider">2. Plantillas por Producto</h3>
+            <span class="text-[10px] bg-zinc-800 text-zinc-300 border border-zinc-700 px-2 py-0.5 rounded-full font-bold">Menú Desplegable</span>
           </div>
-          <div id="presetCategories">
-            <!-- Rendered dynamically by marketing_presets.js -->
+
+          <div>
+            <label class="block text-[11px] font-bold text-slate-400 mb-1">Seleccioná el producto a promocionar:</label>
+            <select id="categorySelect" class="w-full bg-slate-950 border border-zinc-700 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-zinc-500 font-semibold cursor-pointer">
+              <!-- Dynamically populated options -->
+            </select>
+          </div>
+
+          <div id="presetCopysList" class="grid grid-cols-1 gap-2 pt-1">
+            <!-- Rendered dynamically for selected product -->
           </div>
         </div>
 
@@ -270,6 +278,38 @@
 
     </aside>
 
+  </div>
+
+  <!-- Mobile Save & Share Modal -->
+  <div id="saveModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex flex-col items-center justify-center p-4">
+    <div class="bg-zinc-900 border border-zinc-700 rounded-3xl max-w-sm w-full p-5 flex flex-col items-center gap-4 text-center shadow-2xl relative">
+      <button id="closeModalBtn" class="absolute top-4 right-4 text-zinc-400 hover:text-white text-xl font-bold p-1 cursor-pointer">
+        ✕
+      </button>
+
+      <div class="w-12 h-12 rounded-2xl bg-zinc-800 border border-zinc-700 flex items-center justify-center text-white text-2xl">
+        📲
+      </div>
+
+      <div>
+        <h3 class="text-base font-extrabold text-white">¡Tu Historia está Lista!</h3>
+        <p class="text-xs text-zinc-300 mt-1">Mantené presionada la imagen abajo para <b>Guardar en Fotos</b> o presiona <b>Compartir</b>.</p>
+      </div>
+
+      <!-- Rendered HD PNG Image -->
+      <div class="w-full max-h-[50vh] rounded-2xl overflow-hidden border border-zinc-700 shadow-xl bg-black flex items-center justify-center">
+        <img id="modalStoryImg" class="w-full h-full object-contain max-h-[50vh] rounded-2xl" alt="Historia @graffeame">
+      </div>
+
+      <div class="w-full space-y-2 pt-1">
+        <button id="nativeShareBtn" class="w-full py-3 text-xs font-extrabold rounded-xl bg-white text-black hover:bg-zinc-200 transition flex items-center justify-center gap-2 cursor-pointer shadow-lg">
+          📤 Compartir / Guardar en Fotos
+        </button>
+        <a id="directDownloadLink" href="#" download="historia_graffeame.png" class="block w-full py-2.5 text-xs font-bold rounded-xl bg-zinc-800 text-zinc-300 border border-zinc-700 hover:bg-zinc-700 transition">
+          💾 Descarga Directa
+        </a>
+      </div>
+    </div>
   </div>
 
   <script src="marketing_presets.js"></script>
