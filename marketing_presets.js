@@ -213,52 +213,64 @@ const MARKETING_PRESETS = {
   ],
   themes: [
     {
-      id: "graffeame_official",
-      name: "🖤 Graffeame Oficial (Negro, Blanco & Grises)",
+      id: "fire_amber",
+      name: "🔥 Negro & Fuego Ámbar (Grabado a Fuego & Asado)",
+      bgOverlay: "rgba(10, 10, 12, 0.45)",
+      gradientTop: "rgba(0, 0, 0, 0.92)",
+      gradientBottom: "rgba(15, 10, 5, 0.95)",
+      textColor: "#FFFFFF",
+      accentColor: "#F59E0B",
+      badgeBg: "#D97706",
+      badgeText: "#FFFFFF",
+      cardBg: "rgba(24, 20, 15, 0.88)"
+    },
+    {
+      id: "wood_terracotta",
+      name: "🪵 Negro & Terracota (Madera Noble & Ecocuero)",
+      bgOverlay: "rgba(10, 10, 12, 0.45)",
+      gradientTop: "rgba(0, 0, 0, 0.92)",
+      gradientBottom: "rgba(20, 12, 10, 0.95)",
+      textColor: "#FFF8F0",
+      accentColor: "#E07A5F",
+      badgeBg: "#C85A32",
+      badgeText: "#FFFFFF",
+      cardBg: "rgba(28, 20, 18, 0.88)"
+    },
+    {
+      id: "steel_blue",
+      name: "🔪 Negro & Azul Acero (Cuchillos Inox & Virolas)",
+      bgOverlay: "rgba(10, 10, 12, 0.45)",
+      gradientTop: "rgba(0, 0, 0, 0.92)",
+      gradientBottom: "rgba(8, 18, 28, 0.95)",
+      textColor: "#FFFFFF",
+      accentColor: "#38BDF8",
+      badgeBg: "#0284C7",
+      badgeText: "#FFFFFF",
+      cardBg: "rgba(15, 23, 34, 0.88)"
+    },
+    {
+      id: "bamboo_green",
+      name: "🌿 Negro & Verde Bambú (Ecológico & Mascotas)",
+      bgOverlay: "rgba(10, 10, 12, 0.45)",
+      gradientTop: "rgba(0, 0, 0, 0.92)",
+      gradientBottom: "rgba(6, 20, 14, 0.95)",
+      textColor: "#FFFFFF",
+      accentColor: "#10B981",
+      badgeBg: "#059669",
+      badgeText: "#FFFFFF",
+      cardBg: "rgba(15, 26, 20, 0.88)"
+    },
+    {
+      id: "graffeame_monochrome",
+      name: "🖤 Negro Monocromático & Plata (Minimalista)",
       bgOverlay: "rgba(10, 10, 12, 0.45)",
       gradientTop: "rgba(0, 0, 0, 0.92)",
       gradientBottom: "rgba(18, 18, 22, 0.95)",
       textColor: "#FFFFFF",
-      accentColor: "#FFFFFF",
+      accentColor: "#E4E4E7",
       badgeBg: "#27272A",
       badgeText: "#FFFFFF",
       cardBg: "rgba(24, 24, 27, 0.88)"
-    },
-    {
-      id: "graffeame_monochrome_dark",
-      name: "📓 Negro Monocromático & Plata",
-      bgOverlay: "rgba(0, 0, 0, 0.55)",
-      gradientTop: "rgba(0, 0, 0, 0.95)",
-      gradientBottom: "rgba(12, 12, 14, 0.98)",
-      textColor: "#F4F4F5",
-      accentColor: "#E4E4E7",
-      badgeBg: "#E4E4E7",
-      badgeText: "#09090B",
-      cardBg: "rgba(18, 18, 20, 0.92)"
-    },
-    {
-      id: "graffeame_metallic_slate",
-      name: "⚙️ Gris Grafito & Metal",
-      bgOverlay: "rgba(24, 24, 27, 0.4)",
-      gradientTop: "rgba(15, 15, 18, 0.9)",
-      gradientBottom: "rgba(39, 39, 42, 0.95)",
-      textColor: "#FAFAFA",
-      accentColor: "#D4D4D8",
-      badgeBg: "#3F3F46",
-      badgeText: "#FFFFFF",
-      cardBg: "rgba(30, 30, 36, 0.88)"
-    },
-    {
-      id: "graffeame_clean_contrast",
-      name: "⚪ Blanco Elegante & Bordes Negros",
-      bgOverlay: "rgba(0, 0, 0, 0.4)",
-      gradientTop: "rgba(0, 0, 0, 0.88)",
-      gradientBottom: "rgba(10, 10, 10, 0.95)",
-      textColor: "#FFFFFF",
-      accentColor: "#FFFFFF",
-      badgeBg: "#FFFFFF",
-      badgeText: "#000000",
-      cardBg: "rgba(20, 20, 22, 0.85)"
     }
   ]
 };
